@@ -18,6 +18,7 @@ export interface Image {
 }
 
 const builder = ImageUrlBuilder(client);
+// removed any type
 
 export function urlFor(source: Image) {
   return builder.image(source);
