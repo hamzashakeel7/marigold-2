@@ -41,7 +41,7 @@ export function CardDemo() {
             alt={cardImg.alt}
             layout="fill"
             objectFit="cover"
-            className="absolute inset-0 z-[-1]"
+            className="absolute inset-0"
           />
           {/* Overlay and Content */}
           <div className="absolute inset-0 bg-black opacity-50 hover:opacity-80 transition-opacity duration-500"></div>

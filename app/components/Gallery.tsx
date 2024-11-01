@@ -115,10 +115,7 @@ const Gallery = () => {
       </div>
       <LayoutGrid cards={cards} />
 
-      <Link
-        href="/AllGallery.tsx"
-        className="flex items-center justify-center -mt-6"
-      >
+      <Link href="/gallery" className="flex items-center justify-center -mt-6">
         <Button className="bg-blue-600 hover:bg-blue-700 z-10">
           View More
         </Button>

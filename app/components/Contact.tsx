@@ -1,79 +1,82 @@
-import React from "react";
+"use client";
 
-const Contact = () => {
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+
+export default function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage("");
+
+    // Simulating form submission
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    setIsSubmitting(false);
+    setSubmitMessage("Thank you for your message. We'll get back to you soon!");
+  };
+
   return (
-    <div className="px-5 lg:px-48 mt-10 lg:mt-20">
-      <div>
-        <div className="flex items-center text-center justify-center flex-col gap-3 w-full mb-5">
-          <p className="text-lg md:text-xl text-blue-500 tracking-wider font-serif">
-            Conatct Us
-          </p>
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-black ">
-            Ask Your Queries
-          </h1>
-          <p>we will answer within 24hrs</p>
-        </div>
-        <form className="max-w-md mx-auto mt-10">
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="email"
-              name="floating_email"
-              id="floating_email"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
+    <Card className="w-full max-w-md mx-auto mt-10">
+      <CardHeader>
+        <CardTitle>Contact Us</CardTitle>
+        <CardDescription>
+          Fill out the form below to get in touch with us.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Name</Label>
+            <Input id="name" placeholder="Your name" required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" type="email" placeholder="Your email" required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone">Phone</Label>
+            <Input id="phone" type="tel" placeholder="Your phone number" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="message">Message</Label>
+            <Textarea
+              id="message"
+              placeholder="Your message"
               required
+              className="min-h-[100px]"
             />
-            <label
-              htmlFor="floating_email"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Email address
-            </label>
           </div>
-          <div className="relative z-0 w-full mb-5 group">
-            <input
-              type="password"
-              name="floating_password"
-              id="floating_password"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-              required
-            />
-            <label
-              htmlFor="floating_password"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Your Name
-            </label>
-          </div>
-
-          <div className="grid  md:gap-6">
-            <div className="relative z-0 w-full mb-5 group">
-              <textarea
-                rows={3}
-                cols={10}
-                className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
-              />
-              <label
-                htmlFor="floating_phone"
-                className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-              >
-                Ask Your Question
-              </label>
-            </div>
-          </div>
-          <button
+          <Button
             type="submit"
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mx-auto flex"
+            className="w-full bg-blue-500 hover:bg-blue-700"
+            disabled={isSubmitting}
           >
-            Submit
-          </button>
+            {isSubmitting ? "Sending..." : "Send Message"}
+          </Button>
         </form>
-      </div>
-    </div>
+      </CardContent>
+      <CardFooter>
+        {submitMessage && (
+          <p className="text-sm text-green-600 text-center w-full">
+            {submitMessage}
+          </p>
+        )}
+      </CardFooter>
+    </Card>
   );
-};
-
-export default Contact;
+}
