@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { CardDemo } from "../components/ui/card";
+// import { CardDemo } from "@/components/ui/card";
 import Newsletter from "../components/Newsletter";
 import Contact from "../components/Contact";
 
@@ -63,7 +63,7 @@ const page = () => {
           Backstage Pictures...
         </h1>
         <div className="flex items-center justify-center gap-5 w-full">
-          <CardDemo />
+          {/* <CardDemo /> */}
         </div>
       </div>
 

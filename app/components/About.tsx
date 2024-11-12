@@ -14,7 +14,7 @@ export default function About() {
             Who are we ??
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            At RoomEase, we&apos;re passionate about making your stay
+            At marigold, we&apos;re passionate about making your stay
             unforgettable. With our curated selection of rooms and seamless
             booking process, we ensure that your journey begins with comfort and
             convenience...
@@ -26,7 +26,7 @@ export default function About() {
             <div className="aspect-w-16 aspect-h-9">
               <iframe
                 className="w-full h-96"
-                src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                src="https://youtu.be/aHZz_6NhQkQ"
                 title="About RoomEase Bookings"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

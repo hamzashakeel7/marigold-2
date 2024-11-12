@@ -1,11 +1,5 @@
-import { Mail, PhoneCall } from "lucide-react";
 import React from "react";
-import { FaAddressBook, FaFacebookF } from "react-icons/fa";
 import Contact from "../components/Contact";
-import { AiFillInstagram } from "react-icons/ai";
-import { IoLogoWhatsapp } from "react-icons/io";
-import { TbBrandBooking } from "react-icons/tb";
-import Link from "next/link";
 
 const page = () => {
   return (
@@ -20,83 +14,8 @@ const page = () => {
         </div>
       </div>
 
-      {/* 2nd section */}
-      <div className="mt-14 lg:mt-24 bg-gray-200">
-        <div className="px-5 py-5 lg:px-48 mt-10 flex items-start justify-between w-full flex-wrap gap-0">
-          {/* Get In Touch section */}
-          <div className="flex flex-col mt-10 gap-5 w-full lg:w-1/2">
-            <h1 className="text-4xl font-semibold">Get In Touch</h1>
-            <p className="w-full lg:w-3/4 text-gray-500 my-4">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempora
-              est ipsam possimus perferendis vel, nam recusandae, optio
-              perspiciatis aspernatur distinctio illum alias beatae aut.
-              Suscipit vel harum sit in voluptates.
-            </p>
-            {/* Address */}
-            <div className="flex items-start gap-5 w-full">
-              <div className="border-2 rounded-full h-16 w-56 lg:w-24 bg-blue-500 text-white flex items-center justify-center text-2xl">
-                <FaAddressBook />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-semibold">Address</h2>
-                <p className="text-sm text-gray-600">
-                  Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                  Maxime at pariatur asperiores tempore laudantium alias quia
-                  sequi nemo. Molestiae, quibusdam.
-                </p>
-              </div>
-            </div>
-            {/* Phone Number */}
-            <div className="flex items-start gap-5 w-full">
-              <div className="border-2 rounded-full h-16 w-16 bg-blue-500 text-white flex items-center justify-center text-2xl">
-                <PhoneCall />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-semibold">Phone Number</h2>
-                <p className="text-sm text-gray-600">+92-3353036639</p>
-              </div>
-            </div>
-            {/* Email */}
-            <div className="flex items-start gap-5 w-full">
-              <div className="border-2 rounded-full h-16 w-16 bg-blue-500 text-white flex items-center justify-center text-2xl">
-                <Mail />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h2 className="text-xl font-semibold">E-Mail</h2>
-                <p className="text-sm text-gray-600">webwizdurrani@gmail.com</p>
-              </div>
-            </div>
-
-            {/* Social Media */}
-            <div className="flex items-center gap-5 mt-5 mb-5 justify-center md:justify-start">
-              <div className="border-2 rounded-full h-10 w-10 bg-blue-500 text-white flex items-center justify-center text-xl ease-in-out transition-colors hover:bg-blue-800">
-                <Link href="/">
-                  <FaFacebookF />
-                </Link>
-              </div>
-              <div className="border-2 rounded-full h-10 w-10 bg-blue-500 text-white flex items-center justify-center text-xl  ease-in-out transition-colors hover:bg-blue-800">
-                <Link href="/">
-                  <AiFillInstagram />
-                </Link>
-              </div>
-              <div className="border-2 rounded-full h-10 w-10 bg-blue-500 text-white flex items-center justify-center text-xl  ease-in-out transition-colors hover:bg-blue-800">
-                <Link href="/">
-                  <IoLogoWhatsapp />
-                </Link>
-              </div>
-              <div className="border-2 rounded-full h-10 w-10 bg-blue-500 text-white flex items-center justify-center text-xl  ease-in-out transition-colors hover:bg-blue-800">
-                <Link href="/">
-                  <TbBrandBooking />
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact component */}
-          <div className="w-full lg:w-1/2 mb-10 -mt-9">
-            <Contact />
-          </div>
-        </div>
+      <div>
+        <Contact />
       </div>
 
       {/* map */}

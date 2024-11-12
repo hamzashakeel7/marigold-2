@@ -1,7 +1,7 @@
 // Gallery Component
 
 import React from "react";
-import { LayoutGrid } from "./ui/layout-grid";
+import { LayoutGrid } from "@/components/ui/layout-grid";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
