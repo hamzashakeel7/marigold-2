@@ -50,7 +50,7 @@ export default function ContactForm() {
           </p>
           {/* Address */}
           <div className="flex items-start gap-5 w-full">
-            <div className="border-2 rounded-full h-20 w-56 bg-blue-500 text-white flex items-center justify-center text-2xl">
+            <div className="border-2 rounded-full h-20 w-56 lg:w-24 bg-blue-500 text-white flex items-center justify-center text-2xl">
               <FaAddressBook />
             </div>
             <div className="flex flex-col gap-2">
