@@ -125,7 +125,7 @@ export default function RoomDetail() {
       </div>
 
       {/* description and calendar section */}
-      <div className="flex items-center justify-between flex-wrap gap-5 lg:gap-36 mb-5 lg:mb-12 w-full bg-gray-200 shadow-xl p-5 rounded-md">
+      <div className="flex items-center justify-between lg:flex-row gap-5 lg:gap-36 mb-5 lg:mb-12 w-full bg-gray-200 shadow-xl p-5 rounded-md">
         <div className="lg:w-10/12 w-full flex items-start flex-col gap-1 lg:gap-10">
           <h3 className="text-2xl font-semibold mb-4 ">Room Details</h3>
           <p className="text-muted-foreground mb-6 text-sm">
