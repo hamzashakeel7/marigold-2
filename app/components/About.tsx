@@ -26,7 +26,7 @@ export default function About() {
             <div className="aspect-w-16 aspect-h-9">
               <iframe
                 className="w-full h-96"
-                src="https://youtu.be/aHZz_6NhQkQ"
+                src="https://www.youtube.com/embed/aHZz_6NhQkQ"
                 title="About RoomEase Bookings"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen

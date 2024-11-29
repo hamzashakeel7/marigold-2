@@ -24,20 +24,44 @@ export default function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState("");
 
+  // mail sending
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
     setSubmitMessage("");
 
-    // Simulating form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const formData = new FormData(event.currentTarget);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      phone: formData.get("phone"),
+      message: formData.get("message"),
+    };
 
-    setIsSubmitting(false);
-    setSubmitMessage("Thank you for your message. We'll get back to you soon!");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setSubmitMessage(
+          "Thank you for your message. We'll get back to you soon!"
+        );
+      } else {
+        setSubmitMessage("There was an error. Please try again.");
+      }
+    } catch (error) {
+      console.log(error);
+      setSubmitMessage("Error: Unable to send your message.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <div className="mt-10 lg:mt-16 bg-gray-200 flex items-start justify-center lg:px-20 w-full gap-4 lg:gap-8">
+    <div className="mt-10 lg:mt-16 flex items-start justify-center lg:px-20 lg:pl-32 w-full gap-4 lg:gap-8">
       <div className="px-5 py-5 lg:px-12 flex flex-col lg:flex-row items-start justify-between w-full gap-8 lg:gap-4">
         {/* Get In Touch section */}
         <div className="flex flex-col gap-2 lg:gap-5 w-full lg:w-1/2">
@@ -121,7 +145,12 @@ export default function ContactForm() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
-                  <Input id="name" placeholder="Your name" required />
+                  <Input
+                    id="name"
+                    placeholder="Your name"
+                    required
+                    name="name"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
@@ -129,6 +158,7 @@ export default function ContactForm() {
                     id="email"
                     type="email"
                     placeholder="Your email"
+                    name="email"
                     required
                   />
                 </div>
@@ -137,6 +167,7 @@ export default function ContactForm() {
                   <Input
                     id="phone"
                     type="tel"
+                    name="phone"
                     placeholder="Your phone number"
                   />
                 </div>
@@ -145,6 +176,7 @@ export default function ContactForm() {
                   <Textarea
                     id="message"
                     placeholder="Your message"
+                    name="message"
                     required
                     className="min-h-[100px]"
                   />

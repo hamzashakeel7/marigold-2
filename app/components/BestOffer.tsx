@@ -1,23 +1,22 @@
-import Link from "next/link";
-import React from "react";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import Image from "next/image";
+import { ChevronRight, Users, Bed } from "lucide-react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/Badge";
 import { simplifiedRoom } from "../interface";
 import { client } from "../lib/sanity";
-import Image from "next/image";
-import { FaUser } from "react-icons/fa";
-import { BedSingle } from "lucide-react";
+import Link from "next/link";
 
 async function getData() {
   const query = `*[_type == "room"] | order(_createdAt desc)[0...4]{
-        _id,
-        name,
-        description,
-        pricePerNight,
-        capacity,
-        bedrooms,
-        "slug": slug.current,
-        "imageUrl": images[0].asset->url
-      }`;
+    _id,
+    name,
+    description,
+    pricePerNight,
+    capacity,
+    bedrooms,
+    "slug": slug.current,
+    "imageUrl": images[0].asset->url
+  }`;
 
   const data = await client.fetch(query);
   return data;
@@ -25,87 +24,93 @@ async function getData() {
 
 export const dynamic = "force-dynamic";
 
-const BestOffer = async () => {
+export default async function BestOffer() {
   const data: simplifiedRoom[] = await getData();
 
   return (
-    <div className="px-5 lg:px-48">
-      <div className="flex items-start justify-between w-full">
-        <div className="flex flex-col gap-3">
-          <p className="text-lg md:text-xl text-blue-500 tracking-wider font-serif">
-            Marigold&apos;s Best
-          </p>
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-black ">
-            Premium rooms from our catalogue
-          </h1>
-          <p className="text-gray-500 w-full lg:w-2/3 mt-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis
-            minima dignissimos eum, repellendus animi quidem ullam provident
-            molestias quibusdam ad!
-          </p>
-        </div>
-        <div className="">
+    <section className="py-16 px-4 md:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-12">
+          <div className="space-y-4 mb-6 md:mb-0">
+            <Badge variant="secondary" className="font-serif">
+              Marigold&apos;s Best
+            </Badge>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+              Premium rooms from our catalogue
+            </h2>
+            <p className="text-muted-foreground max-w-2xl">
+              Experience luxury and comfort in our carefully curated selection
+              of premium accommodations, designed to provide an unforgettable
+              stay.
+            </p>
+          </div>
           <Link
             href="/all"
-            className="flex items-center justify-center flex-row gap-1 text-blue-500 text-xs w-full md:text-lg hover:gap-2 transition-all ease-linear"
+            className="group inline-flex items-center text-blue-500 hover:text-blue-700 transition-colors"
           >
             View all
-            <MdKeyboardArrowRight className="text-xl" />
+            <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
-      </div>
 
-      {/* Room cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-5 mt-10 lg:px-20">
-        {data.map((room) => (
-          <div
-            key={room._id}
-            className="md:p-3 p-1 rounded-md bg-white w-full sm:w-auto h-[21rem] lg:h-[30rem] flex flex-col shadow-2xl"
-          >
-            <Link
-              href={`/room/${room.slug}`}
-              className="hover:opacity-60 flex-grow flex flex-col"
-            >
-              {/* Image section */}
-              <div className="h-32 lg:h-56 w-full">
-                <Image
-                  src={room.imageUrl}
-                  alt={room.name}
-                  width={500}
-                  height={500}
-                  className="object-cover h-full w-full rounded-md"
-                />
-              </div>
-              {/* Content section */}
-              <div className="flex flex-col p-2 gap-2 flex-grow">
-                <p className="text-xs text-blue-500">Marigold Room</p>
-                <div className="flex items-center justify-between">
-                  <h2 className="text-sm md:text-xl font-semibold line-clamp-1 w-40">
-                    {room.name}
-                  </h2>
-                  <div className="flex items-center justify-center flex-col">
-                    <p className="flex items-center justify-center gap-1 text-xs">
-                      <FaUser className="w-2" /> {room.capacity}
-                    </p>
-                    <p className="flex items-center gap-1 text-xs">
-                      <BedSingle className="w-3" /> {room.bedrooms}
-                    </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {data.map((room) => (
+            <div key={room._id}>
+              <Card className="group h-full overflow-hidden border-0 bg-background/50 shadow-md hover:shadow-xl transition-shadow">
+                <Link href={`/room/${room.slug}`} className="block h-full">
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={room.imageUrl}
+                      alt={room.name}
+                      fill
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   </div>
-                </div>
-                <p className="line-clamp-2 mt-1 md:mt-3 text-gray-500 text-xs md:text-sm">
-                  {room.description}
-                </p>
-                <p className="text-center mt-1 lg:mt-auto text-lg md:text-xl font-bold">
-                  PKR {room.pricePerNight}{" "}
-                  <span className="text-blue-500">/night</span>
-                </p>
-              </div>
-            </Link>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
 
-export default BestOffer;
+                  <CardContent className="space-y-4 p-4">
+                    <Badge
+                      variant="secondary"
+                      className="bg-blue-500/10 text-blue-500 hover:bg-blue-500/20"
+                    >
+                      Marigold Room
+                    </Badge>
+
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="font-semibold text-lg line-clamp-1">
+                        {room.name}
+                      </h3>
+                      <div className="flex flex-col items-end gap-1 text-sm text-muted-foreground">
+                        <div className="flex items-center gap-1">
+                          <Users className="h-4 w-4" />
+                          <span>{room.capacity}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Bed className="h-4 w-4" />
+                          <span>{room.bedrooms}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {room.description}
+                    </p>
+                  </CardContent>
+
+                  <CardFooter className="p-4 pt-0">
+                    <div className="mt-auto w-full text-center">
+                      <span className="text-2xl font-bold">
+                        PKR {room.pricePerNight.toLocaleString()}
+                      </span>
+                      <span className="text-blue-500 ml-1">/night</span>
+                    </div>
+                  </CardFooter>
+                </Link>
+              </Card>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

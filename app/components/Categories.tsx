@@ -40,9 +40,12 @@ const Categories = () => {
             <Image
               src={sections[0].imageUrl}
               alt={sections[0].title}
-              layout="fill"
-              objectFit="cover"
-              className="group-hover:scale-105 transition-transform duration-300 ease-in-out w-full h-full"
+              style={{
+                objectFit: "cover",
+              }}
+              width={800}
+              height={800}
+              className="group-hover:scale-105 transition-transform duration-300 ease-in-out"
             />
             <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
               <p className="text-white text-lg md:text-xl font-semibold">
@@ -63,8 +66,11 @@ const Categories = () => {
               <Image
                 src={section.imageUrl}
                 alt={section.title}
-                layout="fill"
-                objectFit="cover"
+                style={{
+                  objectFit: "cover",
+                }}
+                width={500}
+                height={500}
                 className="group-hover:scale-105 transition-transform duration-300 ease-in-out w-full h-full"
               />
               <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">

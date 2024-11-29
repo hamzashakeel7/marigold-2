@@ -2,97 +2,149 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
+import { motion } from "framer-motion";
+import { Home, Info, Hotel, Phone } from "lucide-react";
 
-const Navbar = () => {
+export default function Navbar() {
   const links = [
-    { name: "Home", href: "/", imgURL: "/home.svg" },
-    { name: "About", href: "/about", imgURL: "/home.svg" },
-    { name: "Rooms", href: "/all", imgURL: "/home.svg" },
-    { name: "Contact Us", href: "/contact", imgURL: "/home.svg" },
+    { name: "Home", href: "/", icon: Home },
+    { name: "About", href: "/about", icon: Info },
+    { name: "Rooms", href: "/all", icon: Hotel },
+    { name: "Contact", href: "/contact", icon: Phone },
   ];
 
   const pathname = usePathname();
-  // const [open, setOpen] = useState(false);
 
   return (
-    <div className="flex items-center justify-center">
-      <nav className="hidden lg:flex items-center justify-center gap-20 relative top-14 z-10 bg-gray-300 shadow-2xl bg-glassmorphism backdrop-blur-3xl  py-4 px-5 rounded-md">
-        <Link
-          className={`text-lg font-semibold ${
-            pathname === "/" ? "text-blue-500" : "text-gray-600"
-          } transition duration-100 hover:text-blue-500`}
-          href="/"
-        >
-          Home
-        </Link>
-
-        {/* Desktop Navbar */}
-
-        <Link
-          className={`text-lg ${
-            pathname === "/about" ? "text-blue-500" : "text-gray-600"
-          } transition duration-100 hover:text-blue-500 font-semibold`}
-          href="/about"
-        >
-          About
-        </Link>
-
-        {/* Logo */}
-        <div className="">
+    <div className="fixed left-0 right-0 top-0 z-50 flex items-center justify-center p-4">
+      <motion.nav
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        className="hidden lg:block rounded-full border border-white/20 bg-white/10 px-8 py-4 shadow-lg backdrop-blur-md"
+      >
+        <div className="flex items-center gap-16">
           <Link
             href="/"
-            className="text-lg font-semibold text-gray-600 hover:text-primary transition duration-100"
+            className={`relative text-sm font-medium transition-colors ${
+              pathname === "/"
+                ? "text-blue-500"
+                : "text-gray-700 hover:text-blue-500"
+            }`}
           >
-            Marigold accomadations
+            {pathname === "/" && (
+              <motion.div
+                layoutId="navbar-indicator"
+                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
+            Home
           </Link>
-        </div>
 
-        {/* contact and rooms */}
+          <Link
+            href="/about"
+            className={`relative text-sm font-medium transition-colors ${
+              pathname === "/about"
+                ? "text-blue-500"
+                : "text-gray-700 hover:text-blue-500"
+            }`}
+          >
+            {pathname === "/about" && (
+              <motion.div
+                layoutId="navbar-indicator"
+                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
+            About
+          </Link>
 
-        <div className="">
+          <Link href="/" className="text-xl font-bold text-gray-800">
+            Marigold
+            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+              {" "}
+              Accommodations
+            </span>
+          </Link>
+
           <Link
             href="/all"
-            className={`text-lg ${
-              pathname === "/all" ? "text-blue-500" : "text-gray-600"
-            } transition duration-100 hover:text-blue-500 font-semibold`}
+            className={`relative text-sm font-medium transition-colors ${
+              pathname === "/all"
+                ? "text-blue-500"
+                : "text-gray-700 hover:text-blue-500"
+            }`}
           >
+            {pathname === "/all" && (
+              <motion.div
+                layoutId="navbar-indicator"
+                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
             Rooms
           </Link>
-        </div>
 
-        <div className="">
           <Link
             href="/contact"
-            className={`text-lg ${
-              pathname === "/contact" ? "text-blue-500" : "text-gray-600"
-            } transition duration-100 hover:text-blue-500 font-semibold`}
+            className={`relative text-sm font-medium transition-colors ${
+              pathname === "/contact"
+                ? "text-blue-500"
+                : "text-gray-700 hover:text-blue-500"
+            }`}
           >
+            {pathname === "/contact" && (
+              <motion.div
+                layoutId="navbar-indicator"
+                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              />
+            )}
             Contact
           </Link>
         </div>
-      </nav>
+      </motion.nav>
 
-      {/* Responsive menu */}
-      <div className="fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-2 backdrop-blur-3xl xs:px-7 md:hidden bg-gray-300">
-        <div className="flex items-center justify-between gap-3 xs:gap-5">
-          {links.map((link) => {
-            return (
-              <Link
-                href={link.href}
-                key={link.name}
-                className={`relative flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5 ${
-                  pathname === link.href ? "text-blue-500" : "text-black"
-                } transition duration-100 hover:text-blue-500`}
-              >
-                {link.name}
-              </Link>
-            );
-          })}
+      {/* Mobile Navigation */}
+      <motion.div
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden"
+      >
+        <div className="mx-4 mb-4 rounded-2xl border border-white/20 bg-white/10 px-6 py-4 shadow-lg backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            {links.map((link) => {
+              const Icon = link.icon;
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`flex flex-col items-center gap-1 transition-colors ${
+                    pathname === link.href
+                      ? "text-blue-500"
+                      : "text-gray-700 hover:text-blue-500"
+                  }`}
+                >
+                  <Icon className="h-5 w-5" />
+                  <span className="text-xs font-medium">{link.name}</span>
+                  {pathname === link.href && (
+                    <motion.div
+                      layoutId="mobile-navbar-indicator"
+                      className="h-1 w-1 rounded-full bg-blue-500"
+                      transition={{
+                        type: "spring",
+                        stiffness: 300,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
-};
-
-export default Navbar;
+}

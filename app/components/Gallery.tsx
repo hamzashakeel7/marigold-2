@@ -97,7 +97,7 @@ const Gallery = () => {
   ];
 
   return (
-    <div className="h-screen py-20 w-full">
+    <div className="h-screen py-20 mb-32 w-full">
       <div className="flex items-center text-center justify-center flex-col gap-3 w-full -mb-8">
         <p className="text-lg md:text-xl text-blue-500 tracking-wider font-serif">
           Gallery
