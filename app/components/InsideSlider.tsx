@@ -7,6 +7,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Heart, MessageSquare } from "lucide-react";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 // fake images
 const roomImages = [
@@ -21,10 +23,13 @@ export default function RoomDetail() {
   const [showLikes, setShowLikes] = useState(0); // toggle effect of like and unlike
   const [showThankYou, setShowThankYou] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [selectedDates, setSelectedDates] = useState<Date[] | undefined>([]);
   const [comment, setComment] = useState("");
   const [showImageModal, setShowImageModal] = useState(false);
   const [modalImage, setModalImage] = useState<string | null>(null);
+  const { isSignedIn, user } = useAuth(); // Clerk authentication state
+  const [selectedDates, setSelectedDates] = useState<Date[] | undefined>([]);
+  const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const router = useRouter();
 
   // fake comments
   const [comments, setComments] = useState([
@@ -63,8 +68,44 @@ export default function RoomDetail() {
   };
 
   const handleReserve = () => {
-    setShowReservationThankYou(true);
-    setTimeout(() => setShowReservationThankYou(false), 2000);
+    if (!isSignedIn) {
+      // Redirect to sign-in page if user is not logged in
+      router.push("/auth/sign-in");
+    } else if (selectedDates && selectedDates.length > 0) {
+      // Show confirmation dialog
+      setShowConfirmationDialog(true);
+    } else {
+      alert("Please select your dates.");
+    }
+  };
+
+  // email on reserve
+  const sendEmail = async () => {
+    const emailData = {
+      userEmail: user?.emailAddresses[0]?.emailAddress, // User's email from clerk
+      selectedDates,
+    };
+
+    try {
+      const response = await fetch("/api/reserve-mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(emailData),
+      });
+
+      if (response.ok) {
+        alert("Reservation email sent successfully!");
+      } else {
+        alert("Failed to send reservation email.");
+      }
+    } catch (error) {
+      console.error("Email send error:", error);
+    }
+  };
+
+  const confirmReservation = () => {
+    sendEmail();
+    setShowConfirmationDialog(false);
   };
 
   const handleImageClick = (image: string) => {
@@ -176,6 +217,32 @@ export default function RoomDetail() {
           </Button>
         </motion.div>
       </div>
+      {/* confirmation dialog on reserve button click */}
+      {showConfirmationDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-lg font-bold mb-4">Confirm Reservation</h2>
+            <p>
+              You are about to reserve the room for the following dates:{" "}
+              {selectedDates.map((date) => date.toDateString()).join(", ")}
+            </p>
+            <div className="flex justify-end mt-4">
+              <Button
+                onClick={confirmReservation}
+                className="mr-2 bg-green-500"
+              >
+                Confirm
+              </Button>
+              <Button
+                onClick={() => setShowConfirmationDialog(false)}
+                className="bg-red-500"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <AnimatePresence>
         {showReservationThankYou && (

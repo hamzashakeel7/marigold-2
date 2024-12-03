@@ -3,7 +3,13 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Home, Info, Hotel, Phone } from "lucide-react";
+import { Home, Info, Hotel, Phone, LogOut, User } from "lucide-react";
+import {
+  SignInButton,
+  SignOutButton,
+  useUser,
+  UserButton,
+} from "@clerk/nextjs";
 
 export default function Navbar() {
   const links = [
@@ -14,105 +20,73 @@ export default function Navbar() {
   ];
 
   const pathname = usePathname();
+  const { isSignedIn, user } = useUser();
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-50 flex items-center justify-center p-4">
+    <>
+      {/* Sign-in/Avatar - Always at top-right corner */}
+      <div className="fixed right-0 top-0 z-50 p-4">
+        {isSignedIn ? (
+          <div className="flex items-center gap-4">
+            <span className="hidden text-sm font-medium text-gray-700 lg:inline">
+              Hi, {user?.firstName || "User"}!
+            </span>
+            <UserButton afterSignOutUrl="/" />
+            <SignOutButton>
+              <button className="rounded-full bg-white/10 p-2 text-gray-700 hover:bg-white/20">
+                <LogOut className="h-5 w-5" />
+              </button>
+            </SignOutButton>
+          </div>
+        ) : (
+          <SignInButton>
+            <button className="rounded-full bg-white/10 p-2 text-gray-700 hover:bg-white/20">
+              <User className="h-5 w-5" />
+            </button>
+          </SignInButton>
+        )}
+      </div>
+
+      {/* Desktop Navbar - Centered */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
-        className="hidden lg:block rounded-full border border-white/20 bg-white/10 px-8 py-4 shadow-lg backdrop-blur-md"
+        className="fixed left-1/3 top-0 z-40 hidden -translate-x-1/3 ml-20 transform lg:block"
       >
-        <div className="flex items-center gap-16">
-          <Link
-            href="/"
-            className={`relative text-sm font-medium transition-colors ${
-              pathname === "/"
-                ? "text-blue-500"
-                : "text-gray-700 hover:text-blue-500"
-            }`}
-          >
-            {pathname === "/" && (
-              <motion.div
-                layoutId="navbar-indicator"
-                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            )}
-            Home
-          </Link>
-
-          <Link
-            href="/about"
-            className={`relative text-sm font-medium transition-colors ${
-              pathname === "/about"
-                ? "text-blue-500"
-                : "text-gray-700 hover:text-blue-500"
-            }`}
-          >
-            {pathname === "/about" && (
-              <motion.div
-                layoutId="navbar-indicator"
-                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            )}
-            About
-          </Link>
-
-          <Link href="/" className="text-xl font-bold text-gray-800">
-            Marigold
-            <span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
-              {" "}
-              Accommodations
-            </span>
-          </Link>
-
-          <Link
-            href="/all"
-            className={`relative text-sm font-medium transition-colors ${
-              pathname === "/all"
-                ? "text-blue-500"
-                : "text-gray-700 hover:text-blue-500"
-            }`}
-          >
-            {pathname === "/all" && (
-              <motion.div
-                layoutId="navbar-indicator"
-                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            )}
-            Rooms
-          </Link>
-
-          <Link
-            href="/contact"
-            className={`relative text-sm font-medium transition-colors ${
-              pathname === "/contact"
-                ? "text-blue-500"
-                : "text-gray-700 hover:text-blue-500"
-            }`}
-          >
-            {pathname === "/contact" && (
-              <motion.div
-                layoutId="navbar-indicator"
-                className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            )}
-            Contact
-          </Link>
+        <div className="mt-4 rounded-full border border-white/20 bg-white/10 px-8 py-4 shadow-lg backdrop-blur-md">
+          <div className="flex items-center gap-16">
+            {links.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`relative text-sm font-medium transition-colors ${
+                  pathname === link.href
+                    ? "text-blue-500"
+                    : "text-gray-700 hover:text-blue-500"
+                }`}
+              >
+                {pathname === link.href && (
+                  <motion.div
+                    layoutId="navbar-indicator"
+                    className="absolute -bottom-2 left-0 right-0 h-0.5 bg-blue-500"
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+                {link.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </motion.nav>
 
-      {/* Mobile Navigation */}
-      <motion.div
+      {/* Mobile Navbar - Bottom */}
+      <motion.nav
         initial={{ y: 100 }}
         animate={{ y: 0 }}
-        className="fixed bottom-0 left-0 right-0 z-50 block lg:hidden"
+        className="fixed bottom-0 left-0 right-0 z-40 block lg:hidden"
       >
-        <div className="mx-4 mb-4 rounded-2xl border border-white/20 bg-white/10 px-6 py-4 shadow-lg backdrop-blur-md">
+        <div className="mx-4 mb-4 rounded-2xl border border-white/20 bg-white/10 px-8 py-1 shadow-lg backdrop-blur-md">
           <div className="flex items-center justify-between">
             {links.map((link) => {
               const Icon = link.icon;
@@ -120,13 +94,13 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`flex flex-col items-center gap-1 transition-colors ${
+                  className={`flex flex-col items-center gap-0 transition-colors ${
                     pathname === link.href
                       ? "text-blue-500"
                       : "text-gray-700 hover:text-blue-500"
                   }`}
                 >
-                  <Icon className="h-5 w-5" />
+                  <Icon className="h-4 w-4" />
                   <span className="text-xs font-medium">{link.name}</span>
                   {pathname === link.href && (
                     <motion.div
@@ -144,7 +118,7 @@ export default function Navbar() {
             })}
           </div>
         </div>
-      </motion.div>
-    </div>
+      </motion.nav>
+    </>
   );
 }

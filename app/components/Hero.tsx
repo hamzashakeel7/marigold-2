@@ -17,7 +17,7 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <>
-      <div className="h-[50vh] md:h-[60vh] lg:h-[75vh] relative top-[-4.5rem]">
+      <div className="h-[50vh] md:h-[60vh] lg:h-[75vh] relative top-[-5rem]">
         <Swiper
           pagination={{
             dynamicBullets: true,
