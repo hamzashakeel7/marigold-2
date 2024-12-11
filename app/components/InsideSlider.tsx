@@ -30,7 +30,7 @@ const amenities = [
 export default function RoomDetail() {
   const [likes, setLikes] = useState(false);
   const [showLikes, setShowLikes] = useState(0);
-  const [showThankYou, setShowThankYou] = useState(false);
+  // const [showThankYou, setShowThankYou] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [comment, setComment] = useState("");
   const [showImageModal, setShowImageModal] = useState(false);
@@ -65,8 +65,6 @@ export default function RoomDetail() {
   const handleLike = () => {
     setLikes(!likes);
     setShowLikes(showLikes + 1);
-    setShowThankYou(true);
-    setTimeout(() => setShowThankYou(false), 2000);
   };
 
   const handleCommentSubmit = (e: React.FormEvent) => {
