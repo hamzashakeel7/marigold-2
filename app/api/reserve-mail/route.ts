@@ -5,6 +5,15 @@ export async function POST(req: NextRequest) {
   try {
     const { userEmail, selectedDates } = await req.json();
 
+    // Format the dates to a more readable format
+    const formattedDates = selectedDates.map((date: string) =>
+      new Intl.DateTimeFormat("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(new Date(date))
+    );
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -17,7 +26,7 @@ export async function POST(req: NextRequest) {
       from: process.env.EMAIL_USER,
       to: [userEmail, process.env.RECEIVE_EMAIL as string],
       subject: "Reservation Confirmation",
-      text: `Your reservation is confirmed for the following dates: ${selectedDates.join(
+      text: `Your reservation is confirmed for the following dates: ${formattedDates.join(
         ", "
       )}. Thank you for choosing our service.`,
     };

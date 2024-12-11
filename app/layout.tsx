@@ -15,19 +15,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <ClerkProvider
-      appearance={{
-        elements: {
-          userProfile: {
-            path: "/auth/user-profile",
-          },
-        },
-      }}
-    >
+    <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
           <ProgressBar />
