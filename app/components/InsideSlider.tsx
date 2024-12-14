@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,18 +8,30 @@ import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Heart, Star, Users, Wifi, Coffee, Tv } from "lucide-react";
-import { useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { useAuth, useUser } from "@clerk/nextjs";
+import { usePathname, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Newsletter from "./Newsletter";
 
-const roomImages = [
-  "/category5.jpg",
-  "/category2.jpg",
-  "/category3.jpg",
-  "/category4.jpg",
-];
+interface ImageAsset {
+  asset: {
+    _id: string;
+    url: string;
+  };
+}
+
+interface Room {
+  name: string;
+  images: ImageAsset[];
+  description: string;
+  pricePerNight: number;
+  capacity: number;
+  bedrooms: number;
+  extraFeatures: string[];
+  likes: number;
+  slug: string;
+}
 
 const amenities = [
   { icon: Wifi, label: "Free Wi-Fi" },
@@ -27,18 +40,26 @@ const amenities = [
   { icon: Users, label: "Up to 4 Guests" },
 ];
 
-export default function RoomDetail() {
+export default function RoomDetail({
+  rooms,
+  slug,
+}: {
+  rooms: Room[];
+  slug: string;
+}) {
+  const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
   const [likes, setLikes] = useState(false);
-  const [showLikes, setShowLikes] = useState(0);
-  // const [showThankYou, setShowThankYou] = useState(false);
+  const [showLikes, setShowLikes] = useState(rooms[0]?.likes || 0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [comment, setComment] = useState("");
   const [showImageModal, setShowImageModal] = useState(false);
   const [modalImage, setModalImage] = useState<string | null>(null);
-  const { isSignedIn, user } = useAuth();
   const [selectedDates, setSelectedDates] = useState<Date[] | undefined>([]);
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const { isSignedIn } = useAuth(); // Clerk authentication state
+  const { user } = useUser(); // Fetch user details
   const router = useRouter();
+  const pathname = usePathname();
 
   const [comments, setComments] = useState([
     {
@@ -57,14 +78,16 @@ export default function RoomDetail() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % roomImages.length);
+      setCurrentImageIndex(
+        (prevIndex) => (prevIndex + 1) % (currentRoom?.images.length || 1)
+      );
     }, 2000);
     return () => clearInterval(timer);
-  }, []);
+  }, [currentRoom]);
 
   const handleLike = () => {
     setLikes(!likes);
-    setShowLikes(showLikes + 1);
+    setShowLikes((prev) => (likes ? prev - 1 : prev + 1));
   };
 
   const handleCommentSubmit = (e: React.FormEvent) => {
@@ -130,6 +153,16 @@ export default function RoomDetail() {
     setShowImageModal(true);
   };
 
+  // finding correct room from slug
+  useEffect(() => {
+    const matchedRoom = rooms.find((room) => room.slug === slug);
+    setCurrentRoom(matchedRoom || null);
+  }, [slug, rooms]); // Update on slug or rooms change
+
+  if (!currentRoom) {
+    return <div>Loading...</div>; // Fallback if no room matches
+  }
+
   return (
     <>
       <div className="container mx-auto px-4">
@@ -139,14 +172,12 @@ export default function RoomDetail() {
           transition={{ duration: 0.5 }}
         >
           <Badge variant="secondary" className="mb-4">
-            Marigold Accomadtions
+            Marigold Accommodations
           </Badge>
-          <h1 className="text-4xl font-bold mb-2">
-            Luxurious Ocean View Suite
-          </h1>
-          <p className="text-xl text-muted-foreground mb-4">
-            Experience tranquility with breathtaking views
-          </p>
+          <h1 className="text-4xl font-bold mb-2">{currentRoom?.name}</h1>
+          {/* <p className="text-xl text-muted-foreground mb-4">
+            {currentRoom?.description}
+          </p> */}
           <div className="flex items-center gap-4 mb-8">
             <Button
               variant="outline"
@@ -170,7 +201,7 @@ export default function RoomDetail() {
           <div className="lg:col-span-2">
             <div className="relative h-[600px] rounded-lg overflow-hidden">
               <Image
-                src={roomImages[currentImageIndex]}
+                src={currentRoom?.images[currentImageIndex]?.asset?.url || ""}
                 alt={`Room image ${currentImageIndex + 1}`}
                 layout="fill"
                 objectFit="cover"
@@ -178,16 +209,16 @@ export default function RoomDetail() {
               />
             </div>
             <div className="grid grid-cols-4 gap-2 mt-2">
-              {roomImages.map((image, index) => (
+              {currentRoom?.images.map((image, index) => (
                 <div
                   key={index}
                   className={`cursor-pointer rounded-lg overflow-hidden ${
                     index === currentImageIndex ? "ring-2 ring-blue-500" : ""
                   }`}
-                  onClick={() => handleImageClick(image)}
+                  onClick={() => handleImageClick(image.asset?.url || "")}
                 >
                   <Image
-                    src={image}
+                    src={image.asset?.url || ""}
                     alt={`Room thumbnail ${index + 1}`}
                     width={100}
                     height={100}
@@ -197,13 +228,11 @@ export default function RoomDetail() {
               ))}
             </div>
           </div>
-          <Card>
-            <CardContent className="p-6">
+          <Card className="">
+            <CardContent className="p-6 h-full">
               <h2 className="text-2xl font-semibold mb-4">Room Details</h2>
               <p className="text-muted-foreground mb-6">
-                Indulge in luxury with our spacious ocean view suite. Featuring
-                modern amenities, a private balcony, and stunning panoramic
-                views of the crystal-clear waters.
+                {currentRoom?.description}
               </p>
               <div className="grid grid-cols-2 gap-4 mb-6">
                 {amenities.map((amenity, index) => (
@@ -214,7 +243,7 @@ export default function RoomDetail() {
                 ))}
               </div>
               <div className="text-3xl font-bold mb-6">
-                $299{" "}
+                ${currentRoom?.pricePerNight}
                 <span className="text-lg font-normal text-muted-foreground">
                   / night
                 </span>
@@ -227,97 +256,117 @@ export default function RoomDetail() {
                   className="rounded-md border mb-6 w-[300px] flex items-center justify-center"
                 />
               </div>
-              <Button onClick={handleReserve} size="lg" className="w-full">
+              <Button onClick={handleReserve} className="w-full">
                 Reserve Now
               </Button>
             </CardContent>
           </Card>
         </div>
 
-        <div className="mb-10 max-w-2xl mx-auto">
-          <h3 className="text-2xl font-semibold mb-4">Reviews</h3>
-          <div className="space-y-4 mb-6">
+        <div className="mb-8">
+          <h2 className="text-2xl font-semibold mb-4">Guest Reviews</h2>
+          <div className="space-y-4">
             {comments.map((comment) => (
-              <Card key={comment.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="font-semibold">{comment.author}</p>
-                    <div className="flex">
-                      {[...Array(comment.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 text-yellow-400" />
-                      ))}
-                    </div>
-                  </div>
-                  <p>{comment.text}</p>
-                </CardContent>
-              </Card>
+              <div key={comment.id} className="p-4 border rounded-lg">
+                <h3 className="font-bold">{comment.author}</h3>
+                <p className="text-sm text-muted-foreground mb-2">
+                  Rating: {"⭐".repeat(comment.rating)}
+                </p>
+                <p>{comment.text}</p>
+              </div>
             ))}
           </div>
-          <form onSubmit={handleCommentSubmit}>
-            <Textarea
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Leave a review..."
-              className="mb-4"
-            />
-            <Button type="submit">Post Review</Button>
-          </form>
         </div>
 
-        {showConfirmationDialog && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <Card className="w-full max-w-md">
-              <CardContent className="p-6">
-                <h2 className="text-lg font-bold mb-4">Confirm Reservation</h2>
-                <p className="mb-4">
-                  You are about to reserve the room for the following dates:{" "}
-                  {selectedDates?.map((date) => date.toDateString()).join(", ")}
-                </p>
-                <div className="flex justify-end gap-4">
-                  <Button onClick={confirmReservation} variant="default">
-                    Confirm
-                  </Button>
-                  <Button
-                    onClick={() => setShowConfirmationDialog(false)}
-                    variant="outline"
-                  >
-                    Cancel
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        <form onSubmit={handleCommentSubmit} className="mb-12">
+          <Textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Leave a comment"
+            className="mb-4"
+          />
+          <Button type="submit">Submit</Button>
+        </form>
+      </div>
+
+      <AnimatePresence>
+        {showImageModal && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="bg-white p-4 rounded-lg">
+              <Image
+                src={modalImage || ""}
+                alt="Modal image"
+                width={600}
+                height={400}
+                className="object-cover w-full h-full"
+              />
+              <Button
+                onClick={() => setShowImageModal(false)}
+                className="mt-4 w-full"
+              >
+                Close
+              </Button>
+            </div>
+          </motion.div>
         )}
 
-        <AnimatePresence>
-          {showImageModal && modalImage && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50"
-              onClick={() => setShowImageModal(false)}
+        {showConfirmationDialog && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="bg-white p-4 rounded-lg">
+              <h2 className="text-xl font-semibold mb-4">
+                Confirm Reservation
+              </h2>
+              <p className="mb-4">
+                Are you sure you want to confirm this reservation?
+              </p>
+              <div className="flex gap-4">
+                <Button onClick={confirmReservation}>Yes</Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowConfirmationDialog(false)}
+                >
+                  No
+                </Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="flex justify-center items-center mb-10 flex-col">
+        <div className="flex justify-start items-start mb-5">
+          <h2 className="text-3xl font-semibold">
+            Look at our rooms in a better fashion
+          </h2>
+        </div>
+        <div className="grid grid-cols-4 gap-10 mt-2">
+          {currentRoom?.images.map((image, index) => (
+            <div
+              key={index}
+              className={`cursor-pointer rounded-lg overflow-hidden`}
+              onClick={() => handleImageClick(image.asset?.url || "")}
             >
-              <motion.div
-                className="relative bg-white p-4 rounded-lg"
-                initial={{ scale: 0.5 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.5 }}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <Image
-                  src={modalImage}
-                  alt="Enlarged Room Image"
-                  width={800}
-                  height={600}
-                  className="rounded-lg"
-                />
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <Image
+                src={image.asset?.url || ""}
+                alt={`Room thumbnail ${index + 1}`}
+                width={300}
+                height={300}
+                className="object-cover w-full h-full"
+              />
+            </div>
+          ))}
+        </div>
       </div>
-      {/* Newsletter */}
       <Newsletter />
     </>
   );
