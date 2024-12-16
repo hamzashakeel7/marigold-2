@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import InsideSlider from "@/app/components/InsideSlider";
+import InsideSlider, { Room } from "@/app/components/InsideSlider";
 import { client } from "@/app/lib/sanity";
 
-const getRooms = async () => {
-  const query = `*[_type == "room"] {
-    _id,
+async function getRoomBySlug(slug: string) {
+  const query = `*[_type == "room" && slug.current == $slug] {
     name,
-    images[]{asset->{_id, url}},
     description,
     pricePerNight,
     capacity,
@@ -15,29 +13,31 @@ const getRooms = async () => {
     extraFeatures,
     likes,
     "slug": slug.current,
-  }`;
-  return await client.fetch(query);
-};
-
-// Explicitly declare the dynamic property
-export const dynamic = "force-dynamic";
-
-interface PageProps {
-  params: {
-    slug: string;
-  };
+    images[]{
+      asset->{
+        url
+      }
+    },
+    _id
+  }[0]`; // Fetch only one matching document
+  const data = await client.fetch(query, { slug });
+  return data;
 }
 
-const Page = async ({ params }: PageProps) => {
-  const { slug } = params; // Access params directly
-  const data = await getRooms();
+export const dynamic = "force-dynamic";
 
-  // Filter rooms by slug if needed
-  const room = data.find((room: any) => room.slug === slug);
+const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
+  // Ensure params is awaited
+  const { slug } = await params;
+  const data = await getRoomBySlug(slug);
+
+  if (!data) {
+    return <div>Room not found</div>; // Handle case where no room matches the slug
+  }
 
   return (
     <div>
-      {room ? <InsideSlider rooms={data} slug={slug} /> : <p>Room not found</p>}
+      <InsideSlider rooms={[data]} slug={slug} />
     </div>
   );
 };

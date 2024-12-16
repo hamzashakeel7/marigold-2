@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Key } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar } from "@/components/ui/calendar";
@@ -14,23 +15,17 @@ import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Newsletter from "./Newsletter";
 
-interface ImageAsset {
-  asset: {
-    _id: string;
-    url: string;
-  };
-}
-
-interface Room {
+export interface Room {
+  _id: string;
   name: string;
-  images: ImageAsset[];
   description: string;
   pricePerNight: number;
   capacity: number;
+  images: { asset: { url: string } }[];
+  slug: string;
   bedrooms: number;
   extraFeatures: string[];
   likes: number;
-  slug: string;
 }
 
 const amenities = [
@@ -75,6 +70,12 @@ export default function RoomDetail({
       rating: 4,
     },
   ]);
+
+  useEffect(() => {
+    const matchedRoom = rooms.find((room) => room.slug === slug);
+    setCurrentRoom(matchedRoom || null);
+    setShowLikes(matchedRoom?.likes || 0);
+  }, [slug, rooms]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -153,14 +154,13 @@ export default function RoomDetail({
     setShowImageModal(true);
   };
 
-  // finding correct room from slug
   useEffect(() => {
     const matchedRoom = rooms.find((room) => room.slug === slug);
     setCurrentRoom(matchedRoom || null);
-  }, [slug, rooms]); // Update on slug or rooms change
+  }, [slug, rooms]);
 
   if (!currentRoom) {
-    return <div>Loading...</div>; // Fallback if no room matches
+    return <div>Loading...</div>;
   }
 
   return (
@@ -201,7 +201,7 @@ export default function RoomDetail({
           <div className="lg:col-span-2">
             <div className="relative h-[600px] rounded-lg overflow-hidden">
               <Image
-                src={currentRoom?.images[currentImageIndex]?.asset?.url || ""}
+                src={currentRoom.images[currentImageIndex]?.asset.url || ""}
                 alt={`Room image ${currentImageIndex + 1}`}
                 layout="fill"
                 objectFit="cover"
@@ -209,23 +209,28 @@ export default function RoomDetail({
               />
             </div>
             <div className="grid grid-cols-4 gap-2 mt-2">
-              {currentRoom?.images.map((image, index) => (
-                <div
-                  key={index}
-                  className={`cursor-pointer rounded-lg overflow-hidden ${
-                    index === currentImageIndex ? "ring-2 ring-blue-500" : ""
-                  }`}
-                  onClick={() => handleImageClick(image.asset?.url || "")}
-                >
-                  <Image
-                    src={image.asset?.url || ""}
-                    alt={`Room thumbnail ${index + 1}`}
-                    width={100}
-                    height={100}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-              ))}
+              {currentRoom?.images.map(
+                (
+                  image: { asset: { url: any } },
+                  index: Key | null | undefined
+                ) => (
+                  <div
+                    key={index}
+                    className={`cursor-pointer rounded-lg overflow-hidden ${
+                      index === currentImageIndex ? "ring-2 ring-blue-500" : ""
+                    }`}
+                    onClick={() => handleImageClick(image.asset?.url || "")}
+                  >
+                    <Image
+                      src={image.asset.url}
+                      alt={`Room thumbnail`}
+                      width={100}
+                      height={100}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                )
+              )}
             </div>
           </div>
           <Card className="">
@@ -350,21 +355,23 @@ export default function RoomDetail({
           </h2>
         </div>
         <div className="grid grid-cols-4 gap-10 mt-2">
-          {currentRoom?.images.map((image, index) => (
-            <div
-              key={index}
-              className={`cursor-pointer rounded-lg overflow-hidden`}
-              onClick={() => handleImageClick(image.asset?.url || "")}
-            >
-              <Image
-                src={image.asset?.url || ""}
-                alt={`Room thumbnail ${index + 1}`}
-                width={300}
-                height={300}
-                className="object-cover w-full h-full"
-              />
-            </div>
-          ))}
+          {currentRoom?.images.map(
+            (image: { asset: { url: any } }, index: Key | null | undefined) => (
+              <div
+                key={index}
+                className={`cursor-pointer rounded-lg overflow-hidden`}
+                onClick={() => handleImageClick(image.asset?.url || "")}
+              >
+                <Image
+                  src={image.asset?.url || ""}
+                  alt={`Room thumbnail`}
+                  width={300}
+                  height={300}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+            )
+          )}
         </div>
       </div>
       <Newsletter />

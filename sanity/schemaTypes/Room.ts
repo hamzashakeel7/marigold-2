@@ -53,7 +53,6 @@ export default {
       title: 'Room Slug',
       options: {
         source: 'name',
-        maxLength: 96,
       },
     },
     {

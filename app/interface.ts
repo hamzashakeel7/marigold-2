@@ -1,3 +1,4 @@
+// import { ImageAsset } from "@sanity/types";
 import { Image } from "./lib/sanity";
 
 export interface simplifiedRoom {
@@ -9,6 +10,8 @@ export interface simplifiedRoom {
   imageUrl: string;
   slug: string;
   bedrooms: number;
+  extraFeatures: string;
+  likes: number;
 }
 
 export interface fullProduct {
