@@ -24,22 +24,29 @@ async function getRoomBySlug(slug: string) {
   return data;
 }
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-static";
 
 const Page = async ({ params }: { params: Promise<{ slug: string }> }) => {
-  // Ensure params is awaited
-  const { slug } = await params;
-  const data = await getRoomBySlug(slug);
+  try {
+    const { slug } = await params;
+    if (!slug) {
+      return <div>Invalid slug provided</div>;
+    }
 
-  if (!data) {
-    return <div>Room not found</div>; // Handle case where no room matches the slug
+    const data = await getRoomBySlug(slug);
+    if (!data) {
+      return <div>Room not found</div>; // Handle case where no room matches the slug
+    }
+
+    return (
+      <div>
+        <InsideSlider rooms={[data]} slug={slug} />
+      </div>
+    );
+  } catch (error) {
+    console.error("Error rendering room page:", error);
+    return <div>An error occurred while loading the page</div>;
   }
-
-  return (
-    <div>
-      <InsideSlider rooms={[data]} slug={slug} />
-    </div>
-  );
 };
 
 export default Page;
