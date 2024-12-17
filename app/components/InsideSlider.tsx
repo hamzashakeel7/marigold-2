@@ -42,7 +42,9 @@ export default function RoomDetail({
   rooms: Room[];
   slug: string;
 }) {
-  const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
+  const initialRoom = rooms.find((room) => room.slug === slug) || null;
+  const [currentRoom, setCurrentRoom] = useState<Room | null>(initialRoom);
+
   const [likes, setLikes] = useState(false);
   const [showLikes, setShowLikes] = useState(rooms[0]?.likes || 0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -72,10 +74,11 @@ export default function RoomDetail({
   ]);
 
   useEffect(() => {
-    const matchedRoom = rooms.find((room) => room.slug === slug);
-    setCurrentRoom(matchedRoom || null);
-    setShowLikes(matchedRoom?.likes || 0);
-  }, [slug, rooms]);
+    if (initialRoom) {
+      setCurrentRoom(initialRoom);
+      setShowLikes(initialRoom.likes);
+    }
+  }, [initialRoom]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -154,10 +157,10 @@ export default function RoomDetail({
     setShowImageModal(true);
   };
 
-  useEffect(() => {
-    const matchedRoom = rooms.find((room) => room.slug === slug);
-    setCurrentRoom(matchedRoom || null);
-  }, [slug, rooms]);
+  // useEffect(() => {
+  //   const matchedRoom = rooms.find((room) => room.slug === slug);
+  //   setCurrentRoom(matchedRoom || null);
+  // }, [slug, rooms]);
 
   if (!currentRoom) {
     return <div>Loading...</div>;
