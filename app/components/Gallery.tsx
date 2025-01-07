@@ -108,13 +108,13 @@ const Gallery = () => {
         </p>
 
         <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-black ">
-          Explore Our
+          Explore Our Rooms
         </h1>
         <p className="w-full lg:w-1/2  p-3">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam,
-          consectetur facere minus enim quidem numquam corrupti itaque neque.
-          Voluptas sed error eos quaerat fuga dolores beatae non aliquid
-          distinctio. Quod?
+          Discover the perfect blend of comfort and elegance in our beautifully
+          designed rooms. Each space is crafted to provide a cozy retreat,
+          complete with modern amenities and serene ambiance. Whether for
+          relaxation or adventure, your stay promises to be unforgettable.
         </p>
       </div>
       <LayoutGrid cards={cards} />
