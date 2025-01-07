@@ -29,8 +29,8 @@ const page = async () => {
 
   return (
     <>
-      <div className="bg-gradient-to-t from-blue-100 to-[#EEEEEE]">
-        <div className="px-5 py-2 md:py-0 lg:px-48 -mt-[4rem] md:-mt-[2rem] lg:mt-0">
+      <div className="">
+        <div className="px-5 md:py-0 lg:px-48 mt-[-6rem] md:-mt-[2rem] lg:mt-0 mb-10">
           <div className="relative top-28">
             <h1 className="text-3xl font-semibold mb-5">Our Premium rooms.</h1>
           </div>

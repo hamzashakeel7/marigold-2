@@ -1,24 +1,20 @@
 import Link from "next/link";
-import React from "react";
-import { MdKeyboardArrowRight } from "react-icons/md";
+import { ChevronRight } from "lucide-react";
 import RoomSlider from "./RoomSlider";
 import { simplifiedRoom } from "../interface";
 import { client } from "../lib/sanity";
-import "swiper/css";
-import "swiper/css/pagination";
-import "./RoomSlider";
 
 async function getData() {
   const query = `*[_type == "room"]{
-          _id,
-          name,
-          description,
-          pricePerNight,
-          capacity,
-          bedrooms,
-          "slug": slug.current,
-          "imageUrl": images[0].asset->url
-        }`;
+    _id,
+    name,
+    description,
+    pricePerNight,
+    capacity,
+    bedrooms,
+    "slug": slug.current,
+    "imageUrl": images[0].asset->url
+  }`;
 
   const data = await client.fetch(query);
   return data;
@@ -26,45 +22,39 @@ async function getData() {
 
 export const dynamic = "force-dynamic";
 
-const Allrooms = async () => {
+const AllRooms = async () => {
   const data: simplifiedRoom[] = await getData();
+
   return (
-    <div>
-      <div className="px-5 lg:px-48 mt-28">
-        <div className="flex items-start justify-between">
-          <div className="flex flex-col gap-3">
-            <p className="text-sm md:text-xl text-blue-500 tracking-wider font-serif">
-              All Of Marigold
-            </p>
-            <h1 className="text-2xl md:text-4xl lg:text-5xl font-semibold text-black ">
-              All Rooms At Affordable!
-            </h1>
-            <p className="text-gray-500 w-full lg:w-2/3 mt-3">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Reiciendis minima dignissimos eum, repellendus animi quidem ullam
-              provident molestias quibusdam ad!
+    <section className="md:py-10 py-5 bg-gray-50 mt-5 md:mt-20">
+      <div className="container mx-auto px-4">
+        <div className="flex items-start justify-between mb-12">
+          <div className="max-w-2xl">
+            <h4 className="text-blue-600 font-medium mb-2 text-sm">
+              Marigold&apos;s Best
+            </h4>
+            <h2 className="md:text-3xl lg:text-4xl text-2xl font-bold text-gray-900 mb-4">
+              Premium rooms from our catalogue
+            </h2>
+            <p className="text-gray-600 text-sm md:text-lg">
+              Experience luxury and comfort in our carefully curated selection
+              of premium accommodations, designed to provide an unforgettable
+              stay.
             </p>
           </div>
-          <div className="">
-            <Link
-              href="/all"
-              className="flex items-center justify-center flex-row gap-1 text-blue-500 text-xs w-full md:text-lg hover:gap-2 transition-all ease-linear"
-            >
-              View all
-              <MdKeyboardArrowRight className="text-xl" />
-            </Link>
-          </div>
+          <Link
+            href="/all"
+            className="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors group text-xs"
+          >
+            View all
+            <ChevronRight className="ml-1 w-5 h-5 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
 
-        {/* rooms slider */}
-        <div className="">
-          <div className="overflow-x-hidden w-full mt-5">
-            <RoomSlider data={data} />
-          </div>
-        </div>
+        <RoomSlider data={data} />
       </div>
-    </div>
+    </section>
   );
 };
 
-export default Allrooms;
+export default AllRooms;

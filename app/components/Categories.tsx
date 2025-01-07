@@ -13,12 +13,12 @@ const sections = [
   {
     title: "Roof sitting",
     imageUrl: "/category4.jpg",
-    link: "/roof",
+    link: "/roofSitting",
   },
   {
     title: "Gym",
     imageUrl: "/category3.jpg",
-    link: "/service",
+    link: "/gym",
   },
   {
     title: "Basement Cafe",

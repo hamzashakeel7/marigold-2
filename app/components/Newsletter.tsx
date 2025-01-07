@@ -39,7 +39,7 @@ const Newsletter = () => {
   };
 
   return (
-    <div className="relative min-h-[600px] w-full overflow-hidden">
+    <div className="relative min-h-[400px] md:min-h-[600px] w-full overflow-hidden">
       {/* Background Image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -51,14 +51,14 @@ const Newsletter = () => {
       </div>
 
       {/* Content */}
-      <div className="relative flex min-h-[600px] items-center justify-center px-4">
+      <div className="relative flex min-h-[400px] md:min-h-[600px] items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-lg rounded-xl border border-white/10 bg-white/10 p-8 backdrop-blur-md"
         >
           <div className="relative mb-6 text-center">
-            <h2 className="mb-2 inline-block text-4xl font-bold tracking-tight text-white">
+            <h2 className="mb-2 inline-block text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-white">
               Get{" "}
               <span className="relative inline-block">
                 <span className="absolute inset-0 rotate-2 rounded bg-blue-600/70 px-6"></span>
@@ -66,7 +66,7 @@ const Newsletter = () => {
               </span>{" "}
               Consultation
             </h2>
-            <p className="text-lg text-white/90">
+            <p className="md:text-lg text-sm text-white/90">
               Subscribe to our newsletter and earn a free consultation with our
               professionals.
             </p>
@@ -74,8 +74,8 @@ const Newsletter = () => {
 
           <form onSubmit={handleSubmit} className="relative">
             <div className="group relative">
-              <div className="animate-tilt absolute -inset-0.5 rounded-lg bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-30 blur transition duration-1000 group-hover:opacity-70" />
-              <div className="relative flex items-center gap-2">
+              <div className="animate-tilt absolute -inset-0.5 rounded-lg bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-30 blur transition duration-1000 group-hover:opacity-70 " />
+              <div className="relative flex items-center gap-2 flex-wrap md:flex-nowrap justify-center">
                 <Input
                   type="email"
                   placeholder="Enter your email"

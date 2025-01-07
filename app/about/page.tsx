@@ -8,11 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/Badge";
 
 export default function AboutPage() {
-  const backstageImages = [
-    "/category1.jpg",
-    "/category2.jpg",
-    "/category5.jpg",
-  ];
+  const backstageImages = ["/rom1.jpg", "/rom2.jpg", "/room4.jpg"];
 
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
@@ -21,7 +17,7 @@ export default function AboutPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative top-[-5rem]">
       {/* Hero Section */}
       <motion.div
         className="relative h-[40vh] lg:h-[60vh] flex items-center justify-center"
@@ -54,7 +50,7 @@ export default function AboutPage() {
 
       {/* Mission Section */}
       <motion.section
-        className="py-20 bg-gradient-to-b from-blue-50 to-white"
+        className="md:py-20 py-10 bg-gradient-to-b from-blue-50 to-white"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -96,7 +92,7 @@ export default function AboutPage() {
 
       {/* Vision Section */}
       <motion.section
-        className="py-20 bg-gray-900 text-white"
+        className="md:py-20 py-10 bg-gray-900 text-white"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
@@ -137,7 +133,7 @@ export default function AboutPage() {
 
       {/* Backstage Section */}
       <motion.section
-        className="py-20"
+        className="md:py-20 py-10"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}

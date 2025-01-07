@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function ReservationSuccess() {
   return (
-    <div className="min-h-screen bg-gradient-to-b bg-inherit py-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-b bg-inherit lg:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

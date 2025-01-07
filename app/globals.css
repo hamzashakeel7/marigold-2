@@ -58,3 +58,67 @@
     --chart-5: 340 75% 55%;
   }
 }
+
+/* dining page animations */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --gold: #d4af37;
+  --neon-pink: #ff69b4;
+  --neon-blue: #1e90ff;
+  --neon-green: #39ff14;
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.bg-gold {
+  background-color: var(--gold);
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* basement cafe */
+.text-neon-pink {
+  color: var(--neon-pink);
+  text-shadow: 0 0 10px var(--neon-pink);
+}
+
+.text-neon-blue {
+  color: var(--neon-blue);
+  text-shadow: 0 0 10px var(--neon-blue);
+}
+
+.text-neon-green {
+  color: var(--neon-green);
+  text-shadow: 0 0 10px var(--neon-green);
+}
+
+.bg-neon-pink {
+  background-color: var(--neon-pink);
+}
+
+.bg-neon-blue {
+  background-color: var(--neon-blue);
+}
+
+.border-neon-pink {
+  border-color: var(--neon-pink);
+}

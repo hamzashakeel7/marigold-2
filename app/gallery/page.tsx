@@ -11,62 +11,53 @@ const rooms = [
   {
     id: 1,
     name: "Luxury Suite",
-    image:
-      "https://plus.unsplash.com/premium_photo-1720020552740-072db3289c27?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
+    image: "/rom1.jpg",
   },
   {
     id: 2,
-    name: "Ocean View Room",
-    image:
-      "https://images.unsplash.com/photo-1720048170996-40507a45c720?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzMXx8fGVufDB8fHx8fA%3D%3D",
+    name: "Luxury Suite better",
+    image: "/rom2.jpg",
   },
   {
     id: 3,
-    name: "Cozy Studio",
-    image:
-      "https://plus.unsplash.com/premium_photo-1720020552740-072db3289c27?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0Nnx8fGVufDB8fHx8fA%3D%3D",
+    name: "Double bed mania",
+    image: "/room4.jpg",
   },
   {
     id: 4,
     name: "Family Suite",
-    image:
-      "https://images.unsplash.com/photo-1719937051176-9b98352a6cf4?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyMXx8fGVufDB8fHx8fA%3D%3D",
+    image: "/room5.jpg",
   },
   {
     id: 5,
-    name: "Penthouse",
-    image:
-      "https://images.unsplash.com/photo-1729366791122-5334a68b6b61?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzMHx8fGVufDB8fHx8fA%3D%3D",
+    name: "Classe Suite",
+    image: "/room6.jpg",
   },
   {
     id: 6,
     name: "Garden View Room",
-    image:
-      "https://images.unsplash.com/photo-1720048170996-40507a45c720?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzMXx8fGVufDB8fHx8fA%3D%3D",
+    image: "/room7.jpg",
   },
   {
     id: 7,
-    name: "Executive Suite",
-    image:
-      "https://images.unsplash.com/photo-1729614499339-b98e60ff68d6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxNHx8fGVufDB8fHx8fA%3D%3D",
+    name: "Marigold from outside",
+    image: "/out1.jpg",
   },
   {
     id: 8,
-    name: "Beachfront Bungalow",
-    image:
-      "https://images.unsplash.com/photo-1730216597753-1b8ac897bcc5?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw0fHx8ZW58MHx8fHx8",
+    name: "marigold at work",
+    image: "/out2.jpg",
   },
   {
     id: 9,
-    name: "City View Apartment",
-    image:
-      "https://images.unsplash.com/photo-1721332154161-847851ea188b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxfHx8ZW58MHx8fHx8",
+    name: "King suite",
+    image: "/room8.jpg",
   },
 ];
 
 export default function RoomGallery() {
   return (
-    <div className="bg-[#EEEEEE] min-h-screen py-12 px-4 sm:px-6 lg:px-8 mt-14">
+    <div className="bg-[#EEEEEE] min-h-screen lg:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">
           Explore Our Rooms

@@ -13,7 +13,9 @@ import { useAuth, useUser } from "@clerk/nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/Badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/Checkbox";
 import Newsletter from "./Newsletter";
+import { Input } from "@/components/ui/input";
 
 export interface Room {
   _id: string;
@@ -53,10 +55,18 @@ export default function RoomDetail({
   const [modalImage, setModalImage] = useState<string | null>(null);
   const [selectedDates, setSelectedDates] = useState<Date[] | undefined>([]);
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { isSignedIn } = useAuth(); // Clerk authentication state
   const { user } = useUser(); // Fetch user details
   const router = useRouter();
   const pathname = usePathname();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    acceptDates: false,
+  });
 
   const [comments, setComments] = useState([
     {
@@ -106,50 +116,21 @@ export default function RoomDetail({
   };
 
   const handleReserve = () => {
-    if (!isSignedIn) {
-      const redirectUrl = window.location.pathname;
-      router.push(
-        `/auth/sign-in?redirect_url=${encodeURIComponent(redirectUrl)}`
-      );
-    } else if (selectedDates && selectedDates.length > 0) {
-      setShowConfirmationDialog(true);
+    if (selectedDates && selectedDates.length > 0) {
+      setIsPopupOpen(true);
     } else {
       alert("Please select your dates.");
     }
   };
 
-  const sendEmail = async () => {
-    const emailData = {
-      userEmail: user?.emailAddresses[0]?.emailAddress,
-      selectedDates,
-    };
-
-    try {
-      const response = await fetch("/api/reserve-mail", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(emailData),
-      });
-
-      if (response.ok) {
-        alert("Reservation email sent successfully!");
-      } else {
-        alert("Failed to send reservation email.");
-      }
-    } catch (error) {
-      console.error("Email send error:", error);
-    }
-  };
-
-  const confirmReservation = async () => {
-    try {
-      await sendEmail();
-      setShowConfirmationDialog(false);
-      router.push("/Thankyou");
-    } catch (error) {
-      console.error("Failed to confirm reservation:", error);
-      alert("An error occurred while confirming your reservation.");
-    }
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target; // Extract name and value from the input field
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value, // Update the specific field in the formData state
+    }));
   };
 
   const handleImageClick = (image: string) => {
@@ -157,14 +138,45 @@ export default function RoomDetail({
     setShowImageModal(true);
   };
 
-  // useEffect(() => {
-  //   const matchedRoom = rooms.find((room) => room.slug === slug);
-  //   setCurrentRoom(matchedRoom || null);
-  // }, [slug, rooms]);
+  const handleSubmitReservation = async () => {
+    setIsSubmitting(true);
+    const { name, email, phone } = formData;
 
-  if (!currentRoom) {
-    return <div>Loading...</div>;
-  }
+    // Validate fields
+    if (
+      !name ||
+      !email ||
+      !phone ||
+      !selectedDates ||
+      selectedDates.length === 0
+    ) {
+      alert("Please fill all fields and select dates.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/reserve-mail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email, // Sending `email` correctly
+          phone,
+          selectedDates, // Pass selected dates
+        }),
+      });
+
+      if (response.ok) {
+        setIsPopupOpen(false);
+        router.push("/Thankyou");
+      } else {
+        alert("Failed to confirm reservation.");
+      }
+    } catch (error) {
+      console.error("Error in reservation:", error);
+      alert("An error occurred. Please try again.");
+    }
+  };
 
   return (
     <>
@@ -202,9 +214,9 @@ export default function RoomDetail({
 
         <div className="grid lg:grid-cols-3 gap-8 mb-12">
           <div className="lg:col-span-2">
-            <div className="relative h-[600px] rounded-lg overflow-hidden">
+            <div className="relative lg:h-[600px] h-[300px] w-[330px] lg:w-full rounded-lg overflow-hidden">
               <Image
-                src={currentRoom.images[currentImageIndex]?.asset.url || ""}
+                src={currentRoom?.images[currentImageIndex]?.asset.url || ""}
                 alt={`Room image ${currentImageIndex + 1}`}
                 layout="fill"
                 objectFit="cover"
@@ -227,8 +239,8 @@ export default function RoomDetail({
                     <Image
                       src={image.asset.url}
                       alt={`Room thumbnail`}
-                      width={100}
-                      height={100}
+                      width={300}
+                      height={300}
                       className="object-cover w-full h-full"
                     />
                   </div>
@@ -270,6 +282,55 @@ export default function RoomDetail({
             </CardContent>
           </Card>
         </div>
+
+        {/* Popup */}
+        <AnimatePresence>
+          {isPopupOpen && (
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+                <h2 className="text-xl font-semibold mb-4">
+                  Complete Your Reservation
+                </h2>
+                <Input
+                  name="name"
+                  placeholder="Full Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="mb-4"
+                />
+                <Input
+                  name="email"
+                  placeholder="Email Address"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="mb-4"
+                />
+                <Input
+                  name="phone"
+                  placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className="mb-4"
+                />
+                <Button onClick={handleSubmitReservation} className="w-full">
+                  {isSubmitting ? "Submitting..." : "Confirm Reservation"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsPopupOpen(false)}
+                  className="w-full mt-4"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Guest Reviews</h2>
@@ -322,47 +383,20 @@ export default function RoomDetail({
             </div>
           </motion.div>
         )}
-
-        {showConfirmationDialog && (
-          <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="bg-white p-4 rounded-lg">
-              <h2 className="text-xl font-semibold mb-4">
-                Confirm Reservation
-              </h2>
-              <p className="mb-4">
-                Are you sure you want to confirm this reservation?
-              </p>
-              <div className="flex gap-4">
-                <Button onClick={confirmReservation}>Yes</Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setShowConfirmationDialog(false)}
-                >
-                  No
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
       </AnimatePresence>
 
-      <div className="flex justify-center items-center mb-10 flex-col">
+      <div className="flex justify-center items-center mb-10 flex-col px-5">
         <div className="flex justify-start items-start mb-5">
           <h2 className="text-3xl font-semibold">
             Look at our rooms in a better fashion
           </h2>
         </div>
-        <div className="grid grid-cols-4 gap-10 mt-2">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 mt-2 lg:px-32">
           {currentRoom?.images.map(
             (image: { asset: { url: any } }, index: Key | null | undefined) => (
               <div
                 key={index}
-                className={`cursor-pointer rounded-lg overflow-hidden`}
+                className={`cursor-pointer rounded-lg overflow-hidden h-[150px] w-[150px]`}
                 onClick={() => handleImageClick(image.asset?.url || "")}
               >
                 <Image

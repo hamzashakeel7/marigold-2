@@ -23,13 +23,13 @@ export const Footer = () => {
   const pathname = usePathname();
 
   const contactInfo = [
-    { icon: MapPin, text: "Clifton teen talwar pakistan." },
+    { icon: MapPin, text: "Phase 7 ext" },
     { icon: Phone, text: "+92 335 303 6639" },
-    { icon: Mail, text: "info@thecodingimpact.com" },
+    { icon: Mail, text: "thecodingimpact@gmail.com" },
   ];
 
   return (
-    <footer className="mt-20 border-t bg-gray-50/50">
+    <footer className="mb-11 md:mb-0 border-t bg-gray-50/50 mt-0">
       <div className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* Brand Section */}
@@ -43,7 +43,7 @@ export const Footer = () => {
                 <h1 className="bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-3xl font-bold text-transparent">
                   Marigold
                   <span className="block text-2xl font-medium">
-                    accommodations
+                    Accommodations
                   </span>
                 </h1>
               </Link>

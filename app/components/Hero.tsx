@@ -17,7 +17,7 @@ import Image from "next/image";
 export default function Hero() {
   return (
     <>
-      <div className="h-[50vh] md:h-[60vh] lg:h-[75vh] relative top-[-5rem]">
+      <div className="h-full md:h-[60vh] lg:h-[85vh] relative top-[-5rem] mb-[-4rem] md:mb-[0rem]">
         <Swiper
           pagination={{
             dynamicBullets: true,
@@ -33,23 +33,23 @@ export default function Hero() {
               src="/hero1.webp"
               alt="Room slider image"
               width={8000}
-              height={8000}
+              height={10000}
               className="w-full h-auto"
               priority
             />
             <div className="absolute inset-0 bottom-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
             <h1 className="absolute lg:bottom-20 bottom-5 lg:left-28 left-5 text-2xl md:text-3xl lg:text-6xl text-white font-semibold z-10 md:w-1/2 text-left">
-              Discover extraordinary comfort in our rooms
+              Welcome to Marigold: Where Elegance Meets Comfort
             </h1>
           </SwiperSlide>
 
           <SwiperSlide className="relative flex flex-col">
             <Image
-              src="/hero1.webp"
+              src="/hero2.jpg"
               alt="Room slider image"
               width={8000}
-              height={8000}
-              className="w-full h-auto"
+              height={10000}
+              className="w-full h-auto bg-center"
               priority
             />
             <div className="absolute inset-0 bottom-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
@@ -59,7 +59,7 @@ export default function Hero() {
           </SwiperSlide>
           <SwiperSlide className="relative flex flex-col">
             <Image
-              src="/hero1.webp"
+              src="/hero3.jpg"
               alt="Room slider image"
               width={8000}
               height={8000}
@@ -68,7 +68,7 @@ export default function Hero() {
             />
             <div className="absolute inset-0 bottom-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
             <h1 className="absolute lg:bottom-20 bottom-5 lg:left-28 left-5 text-2xl md:text-3xl lg:text-6xl text-white font-semibold z-10 md:w-1/2 text-left">
-              Discover extraordinary comfort in our rooms
+              Experience Unmatched Luxury and Tranquility at Marigold
             </h1>
           </SwiperSlide>
         </Swiper>

@@ -28,11 +28,11 @@ export default async function BestOffer() {
   const data: simplifiedRoom[] = await getData();
 
   return (
-    <section className="py-16 px-4 md:px-6 lg:px-8">
+    <section className=" px-4 md:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-12">
           <div className="space-y-4 mb-6 md:mb-0">
-            <Badge variant="secondary" className="font-serif">
+            <Badge variant="secondary" className="font-serif text-blue-600">
               Marigold&apos;s Best
             </Badge>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
@@ -46,7 +46,7 @@ export default async function BestOffer() {
           </div>
           <Link
             href="/all"
-            className="group inline-flex items-center text-blue-500 hover:text-blue-700 transition-colors"
+            className="group inline-flex items-center text-blue-500 hover:text-blue-700 transition-colors text-xs"
           >
             View all
             <ChevronRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />

@@ -2,14 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { A11y, Navigation, Scrollbar, Autoplay } from "swiper/modules";
+import {
+  A11y,
+  Navigation,
+  Scrollbar,
+  Autoplay,
+  EffectFade,
+} from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { simplifiedRoom } from "../interface"; // Import the type for TypeScript
-import { FaUser } from "react-icons/fa";
-import { BedSingle } from "lucide-react";
+import { simplifiedRoom } from "../interface";
+import { Users, Bed } from "lucide-react";
+
+// Import all required Swiper styles
 import "swiper/css";
+import "swiper/css/navigation";
 import "swiper/css/pagination";
+import "swiper/css/effect-fade";
 
 interface RoomSliderProps {
   data: simplifiedRoom[];
@@ -17,71 +25,79 @@ interface RoomSliderProps {
 
 const RoomSlider: React.FC<RoomSliderProps> = ({ data }) => {
   return (
-    <div className="lg:px-32">
+    <div className="w-full">
       <Swiper
-        modules={[Navigation, Scrollbar, A11y, Autoplay]}
-        spaceBetween={10}
-        slidesPerView={2}
-        navigation
-        pagination={{ clickable: true }}
-        scrollbar={{ draggable: true }}
+        modules={[Navigation, Scrollbar, A11y, Autoplay, EffectFade]}
+        spaceBetween={24}
+        slidesPerView={1}
+        navigation={{
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        }}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
         breakpoints={{
-          640: { slidesPerView: 3, spaceBetween: 20 },
-          768: { slidesPerView: 3, spaceBetween: 30 },
-          1024: { slidesPerView: 4, spaceBetween: 40 },
+          640: { slidesPerView: 2, spaceBetween: 24 },
+          1024: { slidesPerView: 3, spaceBetween: 24 },
+          1280: { slidesPerView: 4, spaceBetween: 24 },
         }}
+        className="pb-3"
       >
-        <div className="flex items-center justify-center flex-row rounded-md ">
-          {data.map((room) => (
-            <SwiperSlide
-              className="overflow-x-hidden overflow-y-hidden rounded-md "
-              key={room._id}
+        {data.map((room) => (
+          <SwiperSlide key={room._id}>
+            <Link
+              href={`/room/${room.slug}`}
+              className="group block bg-white rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl"
             >
-              <div className="md:p-3 p-1 rounded-md bg-white w-full sm:w-auto h-[21rem] lg:h-[30rem] flex flex-col">
-                <Link
-                  href={`/room/${room.slug}`}
-                  className="hover:opacity-60 flex-grow flex flex-col gap-1 "
-                >
-                  {/* Image section */}
-                  <div className="h-32 lg:h-56 w-full">
-                    <Image
-                      src={room.imageUrl}
-                      alt={room.name}
-                      width={500}
-                      height={500}
-                      className="object-cover h-full w-full rounded-md"
-                    />
-                  </div>
-                  {/* Content section */}
-                  <div className="flex flex-col p-2 gap-1 flex-grow">
-                    <p className="text-xs text-blue-500">Marigold Room</p>
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-sm md:text-xl font-semibold line-clamp-1 w-40">
-                        {room.name}
-                      </h2>
-                      <div className="flex items-center justify-center flex-col">
-                        <p className="flex items-center justify-center gap-1 text-xs">
-                          <FaUser className="w-2" /> {room.capacity}
-                        </p>
-                        <p className="flex items-center gap-1 text-xs">
-                          <BedSingle className="w-3" /> {room.bedrooms}
-                        </p>
-                      </div>
-                    </div>
-                    <p className="line-clamp-2 mt-1 md:mt-3 text-gray-500 text-xs md:text-sm">
-                      {room.description}
-                    </p>
-                    <p className="text-center mt-1 lg:mt-auto text-lg md:text-xl font-bold">
-                      PKR {room.pricePerNight}{" "}
-                      <span className="text-blue-500">/night</span>
-                    </p>
-                  </div>
-                </Link>
+              <div className="aspect-[4/3] relative overflow-hidden">
+                <Image
+                  src={room.imageUrl}
+                  alt={room.name}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-110"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-600">
+                    Marigold Room
+                  </span>
+                </div>
               </div>
-            </SwiperSlide>
-          ))}
-        </div>
+
+              <div className="p-5 space-y-4">
+                <div className="flex items-start justify-between">
+                  <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
+                    {room.name}
+                  </h3>
+                  <div className="flex flex-col items-end space-y-1">
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Users className="w-4 h-4 mr-1" />
+                      <span>{room.capacity}</span>
+                    </div>
+                    <div className="flex items-center text-sm text-gray-600">
+                      <Bed className="w-4 h-4 mr-1" />
+                      <span>{room.bedrooms}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-sm text-gray-600 line-clamp-2">
+                  {room.description}
+                </p>
+
+                <div className="pt-2 border-t">
+                  <div className="flex items-baseline justify-center">
+                    <span className="text-2xl font-bold text-gray-900">
+                      PKR {room.pricePerNight.toLocaleString()}
+                    </span>
+                    <span className="ml-1 text-sm text-blue-600">/night</span>
+                  </div>
+                </div>
+              </div>
+            </Link>
+          </SwiperSlide>
+        ))}
+
+        <div className="swiper-button-prev !text-blue-600 !w-10 !h-10 !bg-white !rounded-full !shadow-lg after:!text-xl"></div>
+        <div className="swiper-button-next !text-blue-600 !w-10 !h-10 !bg-white !rounded-full !shadow-lg after:!text-xl"></div>
       </Swiper>
     </div>
   );
