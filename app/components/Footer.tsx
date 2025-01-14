@@ -23,9 +23,12 @@ export const Footer = () => {
   const pathname = usePathname();
 
   const contactInfo = [
-    { icon: MapPin, text: "Phase 7 ext" },
-    { icon: Phone, text: "+92 335 303 6639" },
-    { icon: Mail, text: "thecodingimpact@gmail.com" },
+    {
+      icon: MapPin,
+      text: "40-C Khalid commercial street 2 Hotel marigold Accomodations Near Suffa university DHA phase 7 Ext Karachi",
+    },
+    { icon: Phone, text: "+92-3340008879" },
+    { icon: Mail, text: "marigoldaccommodations@gmail.com" },
   ];
 
   return (

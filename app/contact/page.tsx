@@ -8,8 +8,9 @@ const page = () => {
         <div className="flex items-center justify-center flex-col gap-4">
           <h1 className="text-4xl font-semibold">Contact Us</h1>
           <p className="w-full md:w-1/2 text-gray-500 text-center">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nulla odio
-            nostrum sequi omnis dolor velit, eos maxime vel recusandae? Numquam?
+            Welcome to Our Contact Page Your questions and feedback are
+            important to us. Please use the form below to get in touch, and
+            we&apos;ll respond as soon as possible.
           </p>
         </div>
       </div>

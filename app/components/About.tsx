@@ -13,11 +13,39 @@ export default function About() {
           <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 mb-4">
             Who are we ??
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            At marigold, we&apos;re passionate about making your stay
-            unforgettable. With our curated selection of rooms and seamless
-            booking process, we ensure that your journey begins with comfort and
-            convenience...
+          <p className="text-gray-600 text-sm mx-auto">
+            Nestled in the heart of Karachi, Marigold Accommodations offers a
+            luxurious retreat where comfort meets style. Whether you’re here for
+            business, leisure, or a special occasion, we provide an exceptional
+            experience tailored to your needs. Our modern amenities, exceptional
+            service, and prime location make us the ideal choice for travelers
+            seeking a memorable stay. Experience Comfort Like Never Before Our
+            thoughtfully designed rooms and suites are crafted to provide a
+            peaceful haven with everything you need for a restful stay. Enjoy
+            stunning views, plush bedding, and state-of-the-art technology, all
+            aimed at ensuring your utmost comfort and convenience. Unparalleled
+            Service At Marigold Accommodations, we pride ourselves on offering
+            personalized, attentive service to make you feel right at home. From
+            our concierge team, ready to assist with bookings and
+            recommendations, to our housekeeping staff, dedicated to keeping
+            your space pristine, every detail is handled with care. Explore
+            Karachi Whether you&apos;re here to explore the local culture,
+            attend a business event, or relax and unwind, Marigold
+            Accommodations places you close to everything. Discover iconic
+            landmarks, enjoy vibrant shopping districts, and indulge in
+            world-class dining just minutes away from your doorstep. Dining &
+            Relaxation Savor delicious meals at our on-site restaurant, offering
+            a curated menu with fresh, local ingredients. After a day of
+            sightseeing or meetings, unwind with a drink at our cozy lounge or
+            take a dip in our pool for the ultimate relaxation experience. Plan
+            Your Event With our elegant meeting rooms and versatile event
+            spaces, Marigold Accommodations is the perfect venue for
+            conferences, weddings, and celebrations. Let us help you create
+            unforgettable moments with customized packages and attentive event
+            planning services. Book Your Stay Today Ready to experience luxury,
+            comfort, and exceptional service? Browse our rooms, view special
+            offers, and book your stay at Marigold Accommodations today. We look
+            forward to welcoming you soon!
           </p>
         </div>
 

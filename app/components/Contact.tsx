@@ -25,20 +25,21 @@ const contactInfo = [
   {
     icon: FaAddressBook,
     title: "Address",
-    content: "phase 7 ext",
-    link: "https://maps.google.com",
+    content:
+      "40-C Khalid commercial street 2 Hotel marigold Accomodations Near Suffa university DHA phase 7 Ext Karachi",
+    link: "https://maps.app.goo.gl/kVKuhH5vyAsceajj9",
   },
   {
     icon: PhoneCall,
     title: "Phone Number",
-    content: "+92-3353036639",
-    link: "tel:+923353036639",
+    content: "+92-3340008879",
+    link: "tel:+923340008879",
   },
   {
     icon: Mail,
     title: "E-Mail",
-    content: "webwizdurrani@gmail.com",
-    link: "mailto:webwizdurrani@gmail.com",
+    content: "marigoldaccommodations@gmail.com",
+    link: "mailto:marigoldaccommodations@gmail.com",
   },
 ];
 

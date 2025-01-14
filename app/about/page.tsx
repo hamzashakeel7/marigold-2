@@ -36,7 +36,7 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-black/50" />
         </div>
         <motion.div className="relative z-10 text-center" {...fadeIn}>
-          <Badge className="mb-4 text-white" variant="secondary">
+          <Badge className="mb-4 text-lg text-white" variant="secondary">
             Welcome to Marigold
           </Badge>
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
@@ -65,12 +65,13 @@ export default function AboutPage() {
                 Creating Unforgettable Experiences
               </h2>
               <p className="text-gray-600 leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia,
-                non? Iusto earum necessitatibus, nostrum magnam obcaecati
-                possimus ab porro alias at totam beatae quae nisi sint
-                doloremque error. Fugiat animi, molestiae repellendus, adipisci
-                accusamus optio, corporis praesentium neque eos culpa hic quidem
-                saepe reprehenderit itaque vitae consectetur.
+                At Marigold Accommodations, we believe that every stay should be
+                an experience, not just a visit. From the moment you step
+                through our doors, you&apos;re greeted with more than just
+                luxury—you&apos;re welcome into a world of comfort, style, and
+                warmth. Whether you’re traveling for business, a romantic
+                getaway, or a family vacation, we’re here to make your stay
+                unforgettable.
               </p>
             </motion.div>
             <motion.div
@@ -120,12 +121,65 @@ export default function AboutPage() {
                 Setting New Standards in Hospitality
               </h2>
               <p className="text-gray-300 leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia,
-                non? Iusto earum necessitatibus, nostrum magnam obcaecati
-                possimus ab porro alias at totam beatae quae nisi sint
-                doloremque error. Fugiat animi, molestiae repellendus, adipisci
-                accusamus optio.
+                A Place to Connect, Relax, and Celebrate More than just a hotel,
+                we’re a place to unwind, connect, and create memories. Whether
+                you&apos;re enjoying a meal at our signature restaurant, hosting
+                an event in our elegant venues, or simply relaxing in your room
+                after a day of exploration, we provide an atmosphere of comfort
+                and convenience at every turn. Join Us At Marigold
+                Accommodations, you’re not just another guest—you’re part of the
+                family. We’re here to ensure you experience the very best of
+                Karachi in a setting that feels like home. Thank you for
+                choosing us for your stay. We can’t wait to welcome you!
               </p>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Our Story Section */}
+      <motion.section
+        className="md:py-20 py-10 bg-gradient-to-b from-blue-50 to-white"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+            <motion.div {...fadeIn}>
+              <Badge variant="secondary" className="mb-4">
+                Our Story
+              </Badge>
+              <h2 className="text-3xl lg:text-4xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Who Are We ?
+              </h2>
+              <p className="text-gray-600 leading-relaxed">
+                Located in the heart of Karachi, Marigold Accommodations was
+                founded with a simple yet powerful vision: to create a place
+                where travelers can feel like they&apos;re at home, no matter
+                where they&apos;re from. Over the years, we&apos;ve become known
+                for our exceptional service, attention to detail, and commitment
+                to providing an unparalleled hospitality experience. What Makes
+                Us Different What sets us apart is our passion for perfection.
+                Every aspect of [Hotel Name] is designed with you in mind—from
+                our modern, stylish rooms to our friendly, attentive staff, who
+                are always ready to go the extra mile. We understand that every
+                guest is unique, which is why we offer a range of personalized
+                services to make sure your stay is tailored to your needs.
+              </p>
+            </motion.div>
+            <motion.div
+              className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl"
+              initial={{ scale: 0.9, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              <Image
+                src="/ourstory.jpg"
+                alt="Our Mission"
+                fill
+                className="object-cover"
+              />
             </motion.div>
           </div>
         </div>

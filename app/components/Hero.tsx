@@ -38,8 +38,9 @@ export default function Hero() {
               priority
             />
             <div className="absolute inset-0 bottom-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
-            <h1 className="absolute lg:bottom-20 bottom-5 lg:left-28 left-5 text-2xl md:text-3xl lg:text-6xl text-white font-semibold z-10 md:w-1/2 text-left">
-              Welcome to Marigold: Where Elegance Meets Comfort
+            <h1 className="absolute lg:bottom-20 bottom-5 lg:left-28 left-5 text-2xl md:text-3xl lg:text-6xl text-white font-semibold z-10  text-left">
+              <span className="w-full">Welcome to Marigold Accommodations</span>
+              <span className="line-clamp-1"> Your Perfect Escape</span>
             </h1>
           </SwiperSlide>
 
