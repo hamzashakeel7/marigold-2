@@ -16,6 +16,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/Checkbox";
 import Newsletter from "./Newsletter";
 import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from "@/components/ui/dialog";
 
 export interface Room {
   _id: string;
@@ -29,6 +35,11 @@ export interface Room {
   extraFeatures: string[];
   likes: number;
 }
+export interface Comment {
+  name: string;
+  comment: string;
+  createdAt: string;
+}
 
 const amenities = [
   { icon: Wifi, label: "Free Wi-Fi" },
@@ -40,9 +51,11 @@ const amenities = [
 export default function RoomDetail({
   rooms,
   slug,
+  Roomcomments,
 }: {
   rooms: Room[];
   slug: string;
+  Roomcomments: Comment[];
 }) {
   const initialRoom = rooms.find((room) => room.slug === slug) || null;
   const [currentRoom, setCurrentRoom] = useState<Room | null>(initialRoom);
@@ -57,6 +70,8 @@ export default function RoomDetail({
   const [showConfirmationDialog, setShowConfirmationDialog] = useState(false);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [pendingComment, setPendingComment] = useState("");
   const { isSignedIn } = useAuth(); // Clerk authentication state
   const { user } = useUser(); // Fetch user details
   const router = useRouter();
@@ -68,20 +83,20 @@ export default function RoomDetail({
     acceptDates: false,
   });
 
-  const [comments, setComments] = useState([
-    {
-      id: 1,
-      author: "Hamza Shakeel",
-      text: "Great room! Loved the view.",
-      rating: 5,
-    },
-    {
-      id: 2,
-      author: "Durrani",
-      text: "Comfortable and clean. Will book again.",
-      rating: 4,
-    },
-  ]);
+  // const [comments, setComments] = useState([
+  //   {
+  //     id: 1,
+  //     author: "Hamza Shakeel",
+  //     text: "Great room! Loved the view.",
+  //     rating: 5,
+  //   },
+  //   {
+  //     id: 2,
+  //     author: "Durrani",
+  //     text: "Comfortable and clean. Will book again.",
+  //     rating: 4,
+  //   },
+  // ]);
 
   useEffect(() => {
     if (initialRoom) {
@@ -104,14 +119,41 @@ export default function RoomDetail({
     setShowLikes((prev) => (likes ? prev - 1 : prev + 1));
   };
 
-  const handleCommentSubmit = (e: React.FormEvent) => {
+  const handleOpenModal = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (comment.trim()) {
-      setComments([
-        ...comments,
-        { id: Date.now(), author: "You", text: comment, rating: 5 },
-      ]);
-      setComment("");
+    if (!comment.trim()) return;
+    setPendingComment(comment);
+    setOpenModal(true);
+  };
+
+  const handleSubmitComment = async () => {
+    if (!pendingComment.trim() || !currentRoom?._id) return;
+
+    try {
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user?.fullName || "Anonymous",
+          email:
+            user?.primaryEmailAddress?.emailAddress || "anonymous@example.com",
+          comment: pendingComment,
+          roomId: currentRoom._id,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setComment("");
+        setOpenModal(false);
+        window.location.reload(); // Refresh comments
+      } else {
+        alert(result.message || "Failed to submit comment.");
+      }
+    } catch (error) {
+      console.error("Error submitting comment:", error);
+      alert("An error occurred. Please try again.");
     }
   };
 
@@ -163,6 +205,7 @@ export default function RoomDetail({
           email, // Sending `email` correctly
           phone,
           selectedDates, // Pass selected dates
+          roomName: currentRoom?.name,
         }),
       });
 
@@ -206,7 +249,7 @@ export default function RoomDetail({
               <Star className="text-yellow-400 mr-1" />
               <span className="font-semibold">4.9</span>
               <span className="text-muted-foreground ml-1">
-                ({comments.length} reviews)
+                ({Roomcomments.length} reviews)
               </span>
             </div>
           </div>
@@ -335,19 +378,19 @@ export default function RoomDetail({
         <div className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Guest Reviews</h2>
           <div className="space-y-4">
-            {comments.map((comment) => (
-              <div key={comment.id} className="p-4 border rounded-lg">
-                <h3 className="font-bold">{comment.author}</h3>
+            {Roomcomments.map((comment, index) => (
+              <div key={index} className="p-4 border rounded-lg">
+                <h3 className="font-bold">{comment.name}</h3>
                 <p className="text-sm text-muted-foreground mb-2">
-                  Rating: {"⭐".repeat(comment.rating)}
+                  {new Date(comment.createdAt).toLocaleDateString()}
                 </p>
-                <p>{comment.text}</p>
+                <p>{comment.comment}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <form onSubmit={handleCommentSubmit} className="mb-12">
+        <form onSubmit={handleOpenModal} className="mb-12">
           <Textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
@@ -356,6 +399,27 @@ export default function RoomDetail({
           />
           <Button type="submit">Submit</Button>
         </form>
+
+        {/* Confirmation Modal */}
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
+          <DialogContent>
+            <DialogHeader>
+              <h2 className="text-lg font-semibold">Confirm Submission</h2>
+              <p>Are you sure you want to submit this comment?</p>
+            </DialogHeader>
+            <div className="p-4 bg-gray-100 rounded-md">
+              <p>{pendingComment}</p>
+            </div>
+            <DialogFooter>
+              <Button onClick={() => setOpenModal(false)} variant="outline">
+                No
+              </Button>
+              <Button onClick={handleSubmitComment} variant="default">
+                Yes, Submit
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <AnimatePresence>

@@ -4,10 +4,11 @@ import { createClient } from "next-sanity";
 export const runtime = "nodejs";
 
 export const client = createClient({
-  projectId: "8lvpmba0",
+  projectId: process.env.SANITY_PROJECT_ID,
   dataset: "production",
   apiVersion: "2022-03-07",
   useCdn: true,
+  token: process.env.SANITY_API_TOKEN,
 });
 
 export interface Image {

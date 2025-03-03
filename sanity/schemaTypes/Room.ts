@@ -96,5 +96,11 @@ export default {
       description: 'Additional amenities provided in the room',
       of: [{type: 'string'}],
     },
+    {
+      name: 'comments',
+      type: 'array',
+      title: 'Comments',
+      of: [{type: 'reference', to: [{type: 'comment'}]}],
+    },
   ],
 }
